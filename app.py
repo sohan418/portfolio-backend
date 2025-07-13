@@ -15,35 +15,32 @@ if not MONGO_URI:
 # Set up MongoDB client
 try:
     client = MongoClient(MONGO_URI)
-    db = client['portfolio_db']  # Replace with your database name
-    collection = db['contact_messages']  # Replace with your collection name
+    db = client['portfolio_db']
+    collection = db['contact_messages']
 except Exception as e:
     raise ConnectionError(f"Failed to connect to MongoDB: {e}")
 
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
-        # Get the form data from the request
         data = {
             "name": request.form.get('name'),
             "email": request.form.get('email'),
             "message": request.form.get('message')
         }
 
-        # Check if any required fields are missing
         if not all([data['name'], data['email'], data['message']]):
             return jsonify({"error": "All fields are required!"}), 400
 
-        # Insert the data into MongoDB
         collection.insert_one(data)
-
         return jsonify({"message": "Data stored successfully!"}), 201
+
     except Exception as e:
         return jsonify({"error": f"Something went wrong: {str(e)}"}), 500
 
 @app.route('/')
 def hello():
-    return "Hello World"
+    return "Hello, World! The backend is running."
 
 if __name__ == '__main__':
     app.run(debug=True)

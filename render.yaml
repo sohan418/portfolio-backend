@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: portfolio-backend
-    env: python
-    buildCommand: ""
-    startCommand: python app.py
-    envVars:
-      - key: MONGO_URI
-        value: 'mongodb+srv://sohanbisht418:054RQ21w0FftCzqz@cluster0.abcd1.mongodb.net/?retryWrites=true&w=majority'
