@@ -41,7 +41,7 @@ def submit():
             "subject": subject,
             "message": message
         })
-        return jsonify({"message": "Data stored successfully!"}), 201
+        return jsonify({"message": "Thank you for your message! I will get back to you soon."}), 201
 
     except Exception as e:
         return jsonify({"error": f"Something went wrong: {str(e)}"}), 500
