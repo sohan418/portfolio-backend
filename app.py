@@ -22,21 +22,30 @@ except Exception as e:
 
 @app.route('/submit', methods=['POST'])
 def submit():
+    if not request.is_json:
+        return jsonify({"error": "Invalid JSON!"}), 400
+
+    data = request.get_json()
+    name = data.get("name", "").strip()
+    email = data.get("email", "").strip()
+    subject = data.get("subject", "").strip()
+    message = data.get("message", "").strip()
+
+    if not all([name, email, subject, message]):
+        return jsonify({"error": "All fields are required!"}), 400
+
     try:
-        data = {
-            "name": request.form.get('name'),
-            "email": request.form.get('email'),
-            "message": request.form.get('message')
-        }
-
-        if not all([data['name'], data['email'], data['message']]):
-            return jsonify({"error": "All fields are required!"}), 400
-
-        collection.insert_one(data)
+        collection.insert_one({
+            "name": name,
+            "email": email,
+            "subject": subject,
+            "message": message
+        })
         return jsonify({"message": "Data stored successfully!"}), 201
 
     except Exception as e:
         return jsonify({"error": f"Something went wrong: {str(e)}"}), 500
+
 
 @app.route('/')
 def hello():
